@@ -1,0 +1,47 @@
+<!-- TODO: Improve this -->
+<!-- This is a simple HTML file that will display the questions and answers from a JSON file. -->
+<!-- The file input will allow the user to select a JSON file and the JavaScript will read the file and display the questions and answers in a table. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Questions and answer viewer</title>
+
+    <script lang="javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            // Add event listener to the file input
+            document.getElementById('fileInput').addEventListener('change', function () {
+                const file = this.files[0];
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const data = JSON.parse(e.target.result);
+                    let html = '<div>';
+                    for (let i = 0; i < data.length; i++) {
+                        html += '<div style="border-width: thin; border-color: rgb(79 70 229);">';
+                        html += '<div style="margin-bottom: 10px;">';
+                        html += '<strong>' + (i + 1) + ". " + data[i].question + '</strong>';
+                        html += '</div>';
+                        html += '<div style="margin-bottom: 20px;">';
+                        for (let j = 0; j < data[i].answers.length; j++) {
+                            html += String.fromCharCode(65 + j) + '. ' + data[i].answers[j];
+                            if (j < data[i].answers.length - 1) {
+                                html += "<br>";
+                            }
+                        }
+                        html += '</div>';
+                        html += '</div>';
+                    }
+                    html += '</div>';
+                    document.body.innerHTML = html;
+                };
+                reader.readAsText(file);
+            });
+        });
+    </script>
+</head>
+<body>
+<!-- Add element to input a json file  -->
+<input type="file" id="fileInput"/>
+</body>
+</html>
